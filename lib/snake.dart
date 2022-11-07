@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:khobor/app/presentation/ui/screens/treading_news_screen.dart';
+import 'package:khobor/core/connection/presentation/bloc/network_bloc.dart';
 import 'app/presentation/ui/screens/all_news_screen.dart';
 
-void main() => runApp(const ExampleApp());
+import 'app/presentation/ui/screens/anotherScreen.dart';
 
 class ExampleApp extends StatelessWidget {
   const ExampleApp({Key? key}) : super(key: key);
@@ -88,20 +90,37 @@ class _SnakeNavigationBarExampleScreenState
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> pagesWidgets = const [
+      AllNewsScreen(),
+      TrendingNewsScreen(),
+      AnotherScreen(),
+    ];
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          addAutomaticKeepAlives: true,
+          children: [
+            const SizedBox(
+              child: Text(
+                'Hello',
+              ),
+            ),
+            const SizedBox(
+              child: Text(
+                'Hello',
+              ),
+            ),
+            const SizedBox(
+              child: Text(
+                'Hello',
+              ),
+            ),
+          ],
+        ),
+      ),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       extendBody: true,
-      // appBar: AppBar(
-      //   centerTitle: false,
-      //   leading: IconButton(
-      //       icon: const Icon(Icons.arrow_back, color: Colors.black),
-      //       onPressed: () {}),
-      //   title: const Text('Go back', style: TextStyle(color: Colors.black)),
-      //   elevation: 0,
-      //   backgroundColor: Colors.transparent,
-      //   systemOverlayStyle: SystemUiOverlayStyle.dark,
-      // ),
       body: AnimatedContainer(
         color: containerColor ?? containerColors[0],
         duration: const Duration(seconds: 1),
@@ -109,109 +128,7 @@ class _SnakeNavigationBarExampleScreenState
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           onPageChanged: onPageChanged,
-          children: [
-            // Container(
-            //   height: 300,
-            //   child: Column(
-            //     children: [
-            //       Container(
-            //         height: 200,
-            //         width: 350,
-            //         decoration: const BoxDecoration(
-            //             border: Border(
-            //                 bottom: BorderSide(width: 10, color: Colors.green)),
-            //             borderRadius: BorderRadius.all(Radius.circular(24)),
-            //             image: DecorationImage(
-            //                 image: NetworkImage(
-            //                   'https://s.yimg.com/os/creatr-uploaded-images/2022-09/bd1beea0-4027-11ed-abdb-98f9f2d0769a',
-            //                 ),
-            //                 fit: BoxFit.cover)),
-            //       ),
-            //       SizedBox(
-            //         height: 20,
-            //       ),
-            //       Padding(
-            //         padding: const EdgeInsets.symmetric(horizontal: 10),
-            //         child: Text(
-            //           "Hitting the Books: Steve Jobs' iPhone obsession led to Apple's silicon revolution",
-            //           style: TextStyle(
-            //               fontFamily: 'SansSerif',
-            //               fontSize: 18,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       SizedBox(
-            //         height: 15,
-            //       ),
-            //       Padding(
-            //         padding: const EdgeInsets.symmetric(horizontal: 10),
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Row(
-            //               children: [
-            //                 Text(
-            //                   'The Apple',
-            //                   style: TextStyle(
-            //                     fontFamily: 'serif',
-            //                     fontSize: 15,
-            //                     fontWeight: FontWeight.bold,
-            //                   ),
-            //                 ),
-            //                 SizedBox(
-            //                   width: 10,
-            //                 ),
-            //                 Text('14-5-1994'),
-            //               ],
-            //             ),
-            //             SizedBox(
-            //               width: 100,
-            //               child: Row(
-            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                 children: [
-            //                   Icon(Icons.notifications),
-            //                   Icon(Icons.local_activity_rounded),
-            //                   Icon(Icons.home_max_rounded),
-            //                 ],
-            //               ),
-            //             )
-            //           ],
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   height: 300,
-            //   child: BlocProvider<NewsBloc>(
-            //     create: (_) => _newsBloc,
-            //     child: BlocBuilder<NewsBloc, NewsState>(
-            //       builder: (context, state) {
-            //         if (state is NewsLoading) {
-            //           return CircularProgressIndicator();
-            //         } else if (state is NewsError) {
-            //           return Text('Error FEtching news');
-            //         } else if (state is NewsLoaded) {
-            //           return ListView.builder(
-            //               itemCount: state.news.articles!.length,
-            //               itemBuilder: (context, index) {
-            //                 return Text('${state.news.articles![index].title}');
-            //               });
-            //         } else {
-            //           return Container(
-            //             child: Center(child: CircularProgressIndicator()),
-            //           );
-            //         }
-            //       },
-            //     ),
-            //   ),
-            // ),
-            const AllNewsScreen(),
-            const TrendingNewsScreen(),
-            Center(
-              child: Text('dsad124242'),
-            ),
-          ],
+          children: pagesWidgets,
         ),
       ),
       bottomNavigationBar: SnakeNavigationBar.color(
@@ -236,10 +153,6 @@ class _SnakeNavigationBarExampleScreenState
           BottomNavigationBarItem(
               icon: Icon(Icons.calendar_month_rounded), label: 'calendar'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.production_quantity_limits_sharp),
-          //     label: 'microphone'),
-          // BottomNavigationBarItem(icon: Icon(Icons.search), label: 'search')
         ],
         selectedLabelStyle: const TextStyle(fontSize: 14),
         unselectedLabelStyle: const TextStyle(fontSize: 10),
